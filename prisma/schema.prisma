@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CallType {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallStatus {
+  COMPLETED
+  FAILED
+  BUSY
+  NO_ANSWER
+}
+
+enum AgentMode {
+  VOICE
+  CHAT
+}
+
+enum AgentInitiator {
+  USER
+  AI
+}
+
+model User {
+  id            String    @id @default(cuid())
+  clerkId       String    @unique
+  email         String    @unique
+  name          String?
+  workspaces    Workspace[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Workspace {
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  ownerId       String
+  owner         User      @relation(fields: [ownerId], references: [id])
+  logoUrl       String?
+  primaryColor  String?
+  domain        String?
+  minutesLimit  Int       @default(100)
+  minutesUsed   Int       @default(0)
+  agents        Agent[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Agent {
+  id            String          @id @default(cuid())
+  name          String
+  mode          AgentMode       @default(VOICE)
+  workspaceId   String
+  workspace     Workspace       @relation(fields: [workspaceId], references: [id])
+  systemPrompt  String?         @db.Text
+  voiceProvider String?         // e.g., ElevenLabs, PlayHT
+  voiceId       String?
+  
+  // Advanced Convocore-style fields
+  whoStarts          AgentInitiator  @default(USER)
+  greeting            String?         @db.Text
+  language            String          @default("en-US")
+  textScript          String?         @db.Text
+  voiceScript         String?         @db.Text
+  model               String          @default("gpt-4o")
+  temperature         Float           @default(0.7)
+  maxTokens           Int             @default(1000)
+  leadScoringEnabled  Boolean         @default(false)
+  knowledgeEnabled    Boolean         @default(false)
+  maxRetrieve         Int             @default(3)
+  kbFilterTags        String?         @db.Text
+  uiEngineFormsEnabled Boolean         @default(false)
+  uiEngineLayoutsEnabled Boolean         @default(false)
+  canvasEnabled       Boolean         @default(false)
+  canvasData          Json?           // Stores nodes and edges for the visual flow
+  fillersEnabled      Boolean         @default(false)
+  fallbacks           String?         @db.Text
+
+  knowledgeBase KnowledgeBase[]
+  calls         Call[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model KnowledgeBase {
+  id          String   @id @default(cuid())
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id])
+  fileName    String
+  fileUrl     String
+  content     String?   @db.Text
+  createdAt   DateTime @default(now())
+}
+
+model Call {
+  id            String     @id @default(cuid())
+  agentId       String
+  agent         Agent      @relation(fields: [agentId], references: [id])
+  callSid       String     @unique
+  type          CallType
+  status        CallStatus
+  duration      Int?       // in seconds
+  transcript    String?    @db.Text
+  recordingUrl  String?
+  
+  // Analytics Intelligence
+  sentiment     String?    // Positive, Negative, Neutral
+  score         Int?       // 0-100 conversation quality
+  intent        String?    // The primary goal of the caller
+  
+  contactId     String?
+  contact       Contact?   @relation(fields: [contactId], references: [id])
+  createdAt     DateTime   @default(now())
+}
+
+model Contact {
+  id            String     @id @default(cuid())
+  name          String?
+  phone         String     @unique
+  email         String?
+  notes         String?    @db.Text
+  
+  // Persistent Memory
+  summary       String?    @db.Text // AI generated summary of all interactions
+  metadata      Json?      // Custom properties (preferences, past purchases)
+  
+  stage         String     @default("NEW")
+  calls         Call[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
