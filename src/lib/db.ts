@@ -109,6 +109,25 @@ export const db = {
         return newAgent;
       }
     },
+    findUnique: async ({ where }: any) => {
+      try {
+        const res = await pool.query('SELECT * FROM "Agent" WHERE id = $1', [where.id]);
+        return res.rows[0] || null;
+      } catch (error) {
+        const data = readJSON();
+        return data.agents.find((a: any) => a.id === where.id) || null;
+      }
+    },
+    findFirst: async ({ where }: any) => {
+      try {
+        const query = 'SELECT * FROM "Agent" WHERE "workspaceId" = $1 LIMIT 1';
+        const res = await pool.query(query, [where.workspaceId]);
+        return res.rows[0] || null;
+      } catch (error) {
+        const data = readJSON();
+        return data.agents.find((a: any) => a.workspaceId === where.workspaceId) || null;
+      }
+    },
     update: async ({ where, data }: any) => {
       try {
         const keys = Object.keys(data);
@@ -181,6 +200,22 @@ export const db = {
       } catch (error) {
         const data = readJSON();
         return data.workspaces.find((w: any) => (where.id && w.id === where.id) || (where.slug && w.slug === where.slug)) || null;
+      }
+    },
+    create: async ({ data }: any) => {
+      try {
+        const id = `ws_${Math.random().toString(36).substring(7)}`;
+        const res = await pool.query(
+          'INSERT INTO "Workspace" (id, name, slug, "ownerId", "updatedAt") VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
+          [id, data.name, data.slug, data.ownerId]
+        );
+        return res.rows[0];
+      } catch (error) {
+        const dbData = readJSON();
+        const newWS = { id: `ws_${Date.now()}`, ...data, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+        dbData.workspaces.push(newWS);
+        writeJSON(dbData);
+        return newWS;
       }
     },
     update: async ({ where, data }: any) => {
