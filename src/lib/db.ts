@@ -162,6 +162,16 @@ export const db = {
     }
   },
   workspace: {
+    findMany: async ({ where, orderBy }: any) => {
+      try {
+        const query = 'SELECT * FROM "Workspace" ORDER BY "createdAt" DESC';
+        const res = await pool.query(query);
+        return res.rows;
+      } catch (error) {
+        const data = readJSON();
+        return data.workspaces.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      }
+    },
     findUnique: async ({ where }: any) => {
       try {
         const query = where.id ? 'SELECT * FROM "Workspace" WHERE id = $1' : 'SELECT * FROM "Workspace" WHERE slug = $1';
