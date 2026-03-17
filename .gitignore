@@ -48,3 +48,5 @@ next-env.d.ts
 .prisma_config/
 local-db.json
 
+
+.vercel
