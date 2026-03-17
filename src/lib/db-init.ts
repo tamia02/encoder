@@ -1,7 +1,18 @@
 import { Pool } from 'pg';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL?.replace('prisma+postgres://', 'postgres://'),
+const connectionString = process.env.DATABASE_URL?.replace('prisma+postgres://', 'postgres://');
+
+const pool = new Pool(connectionString ? {
+  connectionString,
+  connectionTimeoutMillis: 5000,
+} : {
+  // Empty config to prevent crash
+  host: 'localhost',
+  port: 5432,
+});
+
+pool.on('error', (err) => {
+  console.error("Unexpected error on idle DB client:", err);
 });
 
 export async function initDb() {
