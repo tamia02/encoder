@@ -21,7 +21,8 @@ import {
   Settings2,
   Calendar,
   Layers,
-  ShoppingBag
+  ShoppingBag,
+  Languages
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

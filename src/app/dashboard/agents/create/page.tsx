@@ -152,7 +152,9 @@ export default function AgentBuilderPage() {
                 Creator Wizard v2.0
              </Badge>
              <h2 className="text-4xl font-black tracking-tight text-neutral-900 uppercase">Create AI Agent</h2>
-             <p className="text-neutral-500 mt-2 font-black italic underline decoration-primary/30">Step {currentStep}: {STEPS[currentStep-1].title} — {STEPS[currentStep-1].desc}</p>
+             <p className="text-neutral-500 mt-2 font-black italic underline decoration-primary/30">
+               {currentStep > 0 ? `Step ${currentStep}: ${STEPS[currentStep-1].title} — ${STEPS[currentStep-1].desc}` : "Selecting Template"}
+             </p>
           </div>
           <div className="flex items-center gap-4">
              {currentStep > 0 && (
