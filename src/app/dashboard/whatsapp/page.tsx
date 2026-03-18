@@ -45,33 +45,33 @@ export default function WhatsAppPage() {
   const [activeTab, setActiveTab] = useState<"campaigns" | "templates" | "commerce">("campaigns");
 
   return (
-    <div className="flex flex-col h-full bg-[#F8F9FA] animate-in fade-in duration-500 overflow-hidden">
+    <div className="flex flex-col h-full bg-white animate-in fade-in slide-in-from-bottom-6 duration-1000 overflow-hidden">
       
       {/* Page Header */}
-      <header className="p-8 pb-4 flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500">
-               <MessageSquare className="w-6 h-6" />
-            </div>
-            <h2 className="text-2xl font-black text-neutral-900 uppercase tracking-tight">WhatsApp Marketing Hub</h2>
+      <header className="p-10 pb-6 flex items-center justify-between border-b border-neutral-100">
+        <div className="flex items-center gap-6">
+          <div className="w-16 h-16 rounded-[2rem] bg-green-500/10 flex items-center justify-center text-green-600 shadow-2xl shadow-green-500/10">
+             <MessageSquare className="w-8 h-8" />
           </div>
-          <p className="text-xs text-neutral-500 font-bold uppercase tracking-widest mt-2 ml-13">Direct-to-Customer Campaign Orchestration</p>
+          <div>
+            <h2 className="text-3xl font-black text-neutral-900 uppercase tracking-tight">WhatsApp Marketing Hub</h2>
+            <p className="text-[10px] text-neutral-400 font-black uppercase tracking-[0.2em] mt-1">Direct-to-Customer Campaign Orchestration</p>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-           <Button variant="outline" className="rounded-xl h-11 border-neutral-200 bg-white hover:bg-neutral-50 font-black text-[10px] tracking-widest gap-2">
-              <Settings2 className="w-4 h-4" />
+        <div className="flex items-center gap-4">
+           <Button variant="outline" className="rounded-2xl h-12 px-8 border-neutral-200 bg-white hover:bg-neutral-50 font-black text-[10px] tracking-widest uppercase shadow-sm">
+              <Settings2 className="w-4 h-4 mr-2" />
               API SETTINGS
            </Button>
-           <Button className="rounded-xl h-11 bg-green-600 hover:bg-green-700 text-white font-black text-[10px] tracking-widest gap-2 shadow-lg shadow-green-500/20">
-              <Zap className="w-4 h-4" />
+           <Button className="rounded-2xl h-12 px-10 bg-green-600 hover:bg-green-700 text-white font-black text-[10px] tracking-widest uppercase shadow-xl shadow-green-500/20 transition-all hover:scale-105 active:scale-95">
+              <Zap className="w-4 h-4 mr-2" />
               CONNECT NUMBER
            </Button>
         </div>
       </header>
 
       {/* Internal Navigation */}
-      <div className="px-8 border-b border-neutral-200 flex items-center gap-8">
+      <div className="px-10 border-b border-neutral-100 flex items-center gap-10 bg-neutral-50/30">
         {[
           { id: "campaigns", label: "Campaigns", icon: Target },
           { id: "templates", label: "Message Templates", icon: Layout },
@@ -80,61 +80,61 @@ export default function WhatsAppPage() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2.5 py-4 text-[10px] font-black uppercase tracking-widest transition-all relative whitespace-nowrap ${
+            className={`flex items-center gap-3 py-6 text-[10px] font-black uppercase tracking-widest transition-all relative whitespace-nowrap ${
               activeTab === tab.id
                 ? "text-green-600"
-                : "text-neutral-500 hover:text-neutral-900"
+                : "text-neutral-400 hover:text-neutral-600"
             }`}
           >
-            <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? "text-green-600" : "text-neutral-400"}`} />
+            <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-green-600" : "text-neutral-300"}`} />
             {tab.label}
             {activeTab === tab.id && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-600 rounded-t-full" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-green-600 rounded-t-full shadow-lg shadow-green-600/20" />
             )}
           </button>
         ))}
       </div>
 
-      <main className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+      <main className="flex-1 overflow-y-auto p-10 custom-scrollbar space-y-12">
         {activeTab === "campaigns" && (
-          <div className="space-y-8 animate-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-10 animate-in slide-in-from-bottom-4 duration-700">
             {/* Metrics HUD */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                {[
-                 { label: "Total Sent", value: "24.5k", icon: <Send className="w-4 h-4" />, color: "text-blue-500" },
-                 { label: "Delivery Rate", value: "98.2%", icon: <CheckCircle className="w-4 h-4" />, color: "text-green-500" },
-                 { label: "Open Rate", value: "72.1%", icon: <Eye className="w-4 h-4" />, color: "text-orange-500" },
-                 { label: "Total Revenue", value: "$12.4k", icon: <ShoppingBag className="w-4 h-4" />, color: "text-purple-500" },
+                 { label: "Total Sent", value: "24.5k", icon: <Send className="w-5 h-5" />, color: "text-blue-500" },
+                 { label: "Delivery Rate", value: "98.2%", icon: <CheckCircle className="w-5 h-5" />, color: "text-green-500" },
+                 { label: "Open Rate", value: "72.1%", icon: <Eye className="w-5 h-5" />, color: "text-orange-500" },
+                 { label: "Total Revenue", value: "$12.4k", icon: <ShoppingBag className="w-5 h-5" />, color: "text-purple-500" },
                ].map((metric, idx) => (
-                 <div key={idx} className="p-6 rounded-[2rem] bg-white border border-neutral-200 shadow-sm space-y-2">
+                 <div key={idx} className="p-8 rounded-[2.5rem] bg-white border border-neutral-200 shadow-sm space-y-3 group hover:border-primary/20 transition-all duration-500">
                     <div className="flex items-center justify-between">
                        <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">{metric.label}</span>
-                       <div className={`${metric.color} opacity-60`}>{metric.icon}</div>
+                       <div className={`${metric.color} opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all`}>{metric.icon}</div>
                     </div>
-                    <p className="text-2xl font-black text-neutral-900 tracking-tight">{metric.value}</p>
+                    <p className="text-3xl font-black text-neutral-900 tracking-tight">{metric.value}</p>
                  </div>
                ))}
             </div>
 
             {/* Campaign Table */}
-            <div className="bg-white rounded-[2.5rem] border border-neutral-200 shadow-sm overflow-hidden">
-               <div className="p-6 border-b border-neutral-100 flex items-center justify-between bg-white sticky top-0 z-10">
-                  <div className="flex items-center gap-4">
-                     <div className="relative group w-64">
-                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 group-hover:text-neutral-600" />
+            <div className="bg-white rounded-[3rem] border border-neutral-200 shadow-sm overflow-hidden">
+               <div className="p-8 border-b border-neutral-100 flex items-center justify-between bg-white sticky top-0 z-10">
+                  <div className="flex items-center gap-6">
+                     <div className="relative group w-80">
+                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 group-hover:text-primary transition-colors" />
                        <Input 
-                          placeholder="Search campaigns..." 
-                          className="h-9 pl-9 pr-4 rounded-xl border-neutral-200 bg-neutral-50 text-xs focus:bg-white transition-all outline-none"
+                          placeholder="Search intelligence database..." 
+                          className="h-12 pl-12 pr-6 rounded-2xl border-neutral-200 bg-neutral-50 text-xs font-black uppercase tracking-widest focus:bg-white focus:ring-green-500/20 transition-all"
                        />
                      </div>
-                     <Button variant="outline" className="h-9 rounded-xl border-neutral-200 text-[10px] font-black uppercase tracking-widest gap-2">
-                        <Filter className="w-3.5 h-3.5" />
-                        FILTER
+                     <Button variant="outline" className="h-12 px-6 rounded-2xl border-neutral-200 text-[10px] font-black uppercase tracking-widest gap-2 bg-white hover:bg-neutral-50">
+                        <Filter className="w-4 h-4 text-primary" />
+                        FILTER ENGINE
                      </Button>
                   </div>
-                  <Button className="h-10 px-6 rounded-xl bg-green-600 hover:bg-green-700 text-white font-black text-[10px] tracking-widest gap-2 shadow-lg shadow-green-500/10 transition-transform hover:scale-105 active:scale-95">
-                     <Plus className="w-4 h-4" />
-                     NEW CAMPAIGN
+                  <Button className="h-12 px-10 rounded-2xl bg-green-600 hover:bg-green-700 text-white font-black text-[10px] tracking-widest gap-3 shadow-xl shadow-green-500/10 transition-transform hover:scale-105 active:scale-95 uppercase">
+                     <Plus className="w-5 h-5" />
+                     INITIATE CAMPAIGN
                   </Button>
                </div>
 
@@ -142,54 +142,54 @@ export default function WhatsAppPage() {
                  <table className="w-full text-left">
                    <thead>
                      <tr className="bg-neutral-50/50">
-                        <th className="px-8 py-4 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Campaign Name</th>
-                        <th className="px-8 py-4 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Status</th>
-                        <th className="px-8 py-4 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Performance</th>
-                        <th className="px-8 py-4 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Sent Date</th>
-                        <th className="px-8 py-4 text-[10px] font-black text-neutral-400 uppercase tracking-widest text-right">Actions</th>
+                        <th className="px-10 py-6 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Campaign Identity</th>
+                        <th className="px-10 py-6 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Status Engine</th>
+                        <th className="px-10 py-6 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Optimization Yield</th>
+                        <th className="px-10 py-6 text-[10px] font-black text-neutral-400 uppercase tracking-widest">Dispatch Date</th>
+                        <th className="px-10 py-6 text-[10px] font-black text-neutral-400 uppercase tracking-widest text-right">Control</th>
                      </tr>
                    </thead>
                    <tbody className="divide-y divide-neutral-100">
                      {CAMPAIGNS.map((c) => (
-                       <tr key={c.id} className="hover:bg-neutral-50 transition-colors group">
-                         <td className="px-8 py-5">
-                            <p className="text-sm font-black text-neutral-900 group-hover:text-green-600 transition-colors">{c.name}</p>
-                            <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-0.5">ID: CMP-{c.id}</p>
+                       <tr key={c.id} className="hover:bg-neutral-50/50 transition-colors group">
+                         <td className="px-10 py-8">
+                            <p className="text-sm font-black text-neutral-900 group-hover:text-green-600 transition-colors uppercase tracking-tight">{c.name}</p>
+                            <p className="text-[9px] text-neutral-400 font-black uppercase tracking-widest mt-1">ID: CMP-{c.id}</p>
                          </td>
-                         <td className="px-8 py-5">
-                            <Badge className={`rounded-xl px-2.5 py-1 text-[9px] font-black uppercase tracking-widest border-0 ${
-                              c.status === 'Active' ? 'bg-green-100 text-green-700' :
-                              c.status === 'Scheduled' ? 'bg-blue-100 text-blue-700' :
+                         <td className="px-10 py-8">
+                            <span className={`inline-flex items-center px-4 py-1.5 rounded-2xl text-[9px] font-black uppercase tracking-widest border-0 shadow-sm ${
+                              c.status === 'Active' ? 'bg-green-50 text-green-700 border border-green-100' :
+                              c.status === 'Scheduled' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
                               'bg-neutral-100 text-neutral-500'
                             }`}>
                                {c.status}
-                            </Badge>
+                            </span>
                          </td>
-                         <td className="px-8 py-5">
-                            <div className="flex items-center gap-4">
-                               <div className="min-w-[80px]">
-                                  <div className="flex items-center justify-between mb-1.5">
-                                     <span className="text-[9px] font-black text-neutral-500">Read: {c.read}</span>
-                                     <span className="text-[9px] font-black text-green-600">{c.cr}</span>
+                         <td className="px-10 py-8">
+                            <div className="flex items-center gap-6">
+                               <div className="min-w-[120px]">
+                                  <div className="flex items-center justify-between mb-2">
+                                     <span className="text-[9px] font-black text-neutral-400 uppercase">Read: {c.read}</span>
+                                     <span className="text-[9px] font-black text-green-600 uppercase tracking-widest">{c.cr} Yield</span>
                                   </div>
-                                  <Progress value={parseInt(c.cr)} className="h-1 text-green-500 bg-neutral-100" />
+                                  <Progress value={parseInt(c.cr)} className="h-1.5 bg-neutral-100" />
                                </div>
-                               <div className="h-8 w-px bg-neutral-100 mx-1" />
-                               <div className="space-y-0.5">
-                                  <p className="text-[10px] font-black text-neutral-900">{c.sent}</p>
-                                  <p className="text-[8px] text-neutral-400 uppercase font-black">Total Sent</p>
+                               <div className="h-10 w-px bg-neutral-100" />
+                               <div>
+                                  <p className="text-sm font-black text-neutral-900">{c.sent}</p>
+                                  <p className="text-[8px] text-neutral-400 uppercase font-black tracking-widest">Total Dispatch</p>
                                </div>
                             </div>
                          </td>
-                         <td className="px-8 py-5">
-                            <p className="text-[11px] font-bold text-neutral-500 flex items-center gap-2">
-                               <Calendar className="w-3 h-3" />
+                         <td className="px-10 py-8">
+                            <p className="text-[10px] font-black text-neutral-500 flex items-center gap-2 uppercase tracking-tight">
+                               <Calendar className="w-4 h-4 text-primary" />
                                {c.date}
                             </p>
                          </td>
-                         <td className="px-8 py-5 text-right">
-                            <Button variant="ghost" size="sm" className="rounded-lg h-8 w-8 p-0 hover:bg-neutral-100">
-                               <MoreVertical className="w-4 h-4 text-neutral-400" />
+                         <td className="px-10 py-8 text-right">
+                            <Button variant="ghost" size="sm" className="rounded-xl h-10 w-10 p-0 hover:bg-neutral-100 transition-all">
+                               <MoreVertical className="w-5 h-5 text-neutral-400" />
                             </Button>
                          </td>
                        </tr>
@@ -198,55 +198,59 @@ export default function WhatsAppPage() {
                  </table>
                </div>
                
-               <div className="p-8 bg-neutral-50/50 border-t border-neutral-100 text-center">
-                  <p className="text-[10px] text-neutral-400 font-black uppercase tracking-[0.2em]">Showing {CAMPAIGNS.length} of 124 campaigns</p>
+               <div className="p-10 bg-neutral-50 border-t border-neutral-100 text-center">
+                  <p className="text-[10px] text-neutral-400 font-black uppercase tracking-[0.3em]">Telemetry sync complete: {CAMPAIGNS.length} segments analyzed</p>
                </div>
             </div>
           </div>
         )}
 
         {activeTab === "templates" && (
-          <div className="space-y-8 animate-in fade-in duration-500">
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-10 animate-in fade-in duration-700">
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
                 {TEMPLATES.map((t) => (
-                  <div key={t.id} className="bg-white rounded-[2.5rem] border border-neutral-200 shadow-sm p-8 space-y-6 hover:shadow-md transition-all group relative overflow-hidden">
-                     <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <Layout className="w-20 h-20" />
+                  <div key={t.id} className="bg-white rounded-[3rem] border border-neutral-200 shadow-sm p-10 space-y-8 hover:shadow-2xl hover:shadow-green-500/5 transition-all duration-700 group relative overflow-hidden flex flex-col justify-between">
+                     <div className="absolute -top-10 -right-10 p-10 opacity-5 group-hover:opacity-10 transition-opacity duration-1000 group-hover:scale-110">
+                        <Layout className="w-32 h-32" />
                      </div>
-                     <div className="flex items-center justify-between">
-                        <Badge className={`rounded-xl px-2.5 py-1 text-[9px] font-black uppercase tracking-widest border-0 ${
-                          t.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
-                        }`}>
-                           {t.status}
-                        </Badge>
-                        <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">{t.category}</span>
+                     <div className="relative z-10 space-y-8">
+                       <div className="flex items-center justify-between">
+                          <span className={`px-4 py-1.5 rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-sm ${
+                            t.status === 'Approved' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-orange-50 text-orange-700 border border-orange-100'
+                          }`}>
+                             {t.status}
+                          </span>
+                          <span className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">{t.category}</span>
+                       </div>
+                       <div>
+                          <h4 className="text-lg font-black text-neutral-900 group-hover:text-green-600 transition-colors uppercase tracking-tight">{t.name}</h4>
+                          <div className="flex items-center gap-3 mt-3">
+                             <div className="w-8 h-8 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-center text-primary shadow-inner">
+                                <Languages className="w-4 h-4" />
+                             </div>
+                             <span className="text-[10px] text-neutral-500 font-black uppercase tracking-widest">{t.language}</span>
+                          </div>
+                       </div>
                      </div>
-                     <div>
-                        <h4 className="text-sm font-black text-neutral-900 group-hover:text-green-600 transition-colors uppercase tracking-tight">{t.name}</h4>
-                        <div className="flex items-center gap-2 mt-2">
-                           <Languages className="w-3 h-3 text-neutral-400" />
-                           <span className="text-[10px] text-neutral-500 font-bold uppercase">{t.language}</span>
-                        </div>
-                     </div>
-                     <div className="pt-4 flex items-center gap-3">
-                        <Button variant="outline" className="flex-1 rounded-xl h-10 border-neutral-200 text-[10px] font-black tracking-widest gap-2">
-                           <Eye className="w-3.5 h-3.5" /> PREVIEW
+                     <div className="relative z-10 pt-8 flex items-center gap-4 border-t border-neutral-50">
+                        <Button variant="outline" className="flex-1 rounded-2xl h-12 bg-white border-neutral-200 text-[10px] font-black tracking-widest uppercase hover:bg-neutral-50 shadow-sm">
+                           <Eye className="w-4 h-4 mr-2" /> PREVIEW
                         </Button>
-                        <Button variant="ghost" className="rounded-xl h-10 w-10 p-0 border border-neutral-200">
-                           <MoreVertical className="w-4 h-4 text-neutral-400" />
+                        <Button variant="ghost" className="rounded-2xl h-12 w-12 p-0 border border-neutral-200 hover:bg-neutral-50 transition-all">
+                           <MoreVertical className="w-5 h-5 text-neutral-400" />
                         </Button>
                      </div>
                   </div>
                 ))}
                 
                 {/* Create New Template Placeholder */}
-                <div className="bg-white rounded-[2.5rem] border-2 border-dashed border-neutral-200 p-8 flex flex-col items-center justify-center text-center space-y-4 hover:bg-neutral-50/50 transition-all cursor-pointer group">
-                   <div className="w-12 h-12 rounded-2xl bg-neutral-100 flex items-center justify-center text-neutral-300 group-hover:scale-110 transition-transform">
-                      <Plus className="w-6 h-6" />
+                <div className="bg-neutral-50 rounded-[3rem] border-4 border-dashed border-neutral-200 p-12 flex flex-col items-center justify-center text-center space-y-6 hover:bg-white hover:border-green-600/30 transition-all duration-700 cursor-pointer group shadow-inner hover:shadow-xl">
+                   <div className="w-16 h-16 rounded-[2rem] bg-white flex items-center justify-center text-neutral-300 group-hover:scale-110 group-hover:bg-green-50 group-hover:text-green-600 transition-all duration-700 shadow-sm border border-neutral-100">
+                      <Plus className="w-8 h-8" />
                    </div>
                    <div>
-                      <h4 className="text-sm font-black text-neutral-900 uppercase tracking-tight">New Template</h4>
-                      <p className="text-[10px] text-neutral-400 font-bold uppercase mt-1">Submit for Meta approval</p>
+                      <h4 className="text-lg font-black text-neutral-900 uppercase tracking-tight">New Template</h4>
+                      <p className="text-[10px] text-neutral-400 font-black uppercase tracking-widest mt-2 opacity-60">Submit for Meta neural approval</p>
                    </div>
                 </div>
              </div>
@@ -254,23 +258,23 @@ export default function WhatsAppPage() {
         )}
 
         {activeTab === "commerce" && (
-          <div className="py-20 flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in duration-700">
-             <div className="w-24 h-24 rounded-[2.5rem] bg-white border border-neutral-200 flex items-center justify-center text-neutral-200 shadow-sm relative group">
-                <ShoppingBag className="w-12 h-12 group-hover:scale-110 transition-transform duration-500" />
-                <Badge className="absolute -top-2 -right-2 bg-green-500 text-white border-0 text-[10px] px-2 py-0.5 font-black uppercase tracking-widest">BETA</Badge>
+          <div className="py-24 flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+             <div className="w-32 h-32 rounded-[3rem] bg-white border border-neutral-200 flex items-center justify-center text-neutral-200 shadow-xl relative group">
+                <ShoppingBag className="w-14 h-14 group-hover:scale-110 group-hover:text-green-600 transition-all duration-700" />
+                <span className="absolute -top-3 -right-3 bg-green-600 text-white border-4 border-white text-[10px] px-3 py-1.5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-green-500/20">META BETA</span>
              </div>
-             <div className="max-w-md space-y-4">
-                <h3 className="text-2xl font-black text-neutral-900 uppercase tracking-tight">WhatsApp Commerce</h3>
-                <p className="text-sm text-neutral-500 font-bold leading-relaxed">
-                   Sync your product catalog directly to WhatsApp. Enable automated order placement, payment collection, and shipping updates within the chat.
+             <div className="max-w-xl space-y-6">
+                <h3 className="text-4xl font-black text-neutral-900 uppercase tracking-tight">WhatsApp Commerce Engine</h3>
+                <p className="text-sm text-neutral-400 font-bold leading-relaxed uppercase tracking-widest opacity-80">
+                   Sync your high-yield product catalog directly to WhatsApp. Enable automated order persistence, neural payment processing, and real-time shipping telemetry within the direct interaction stream.
                 </p>
              </div>
-             <div className="flex items-center gap-4">
-                <Button className="rounded-xl h-12 px-10 bg-black text-white font-black text-[11px] tracking-widest uppercase shadow-xl shadow-black/10">
-                   ACTIVATE STOREFRONT
+             <div className="flex items-center gap-6">
+                <Button className="rounded-2xl h-16 px-14 bg-black text-white font-black text-[11px] tracking-widest uppercase shadow-2xl shadow-black/20 transition-all hover:scale-105 active:scale-95">
+                   ACTIVATE STOREFRONT ENGINE
                 </Button>
-                <Button variant="outline" className="rounded-xl h-12 px-10 border-neutral-200 font-black text-[11px] tracking-widest uppercase">
-                   VIEW DOCS
+                <Button variant="outline" className="rounded-2xl h-16 px-12 border-neutral-200 bg-white font-black text-[11px] tracking-widest uppercase hover:bg-neutral-50 shadow-sm">
+                   TELEMETRY DOCUMENTATION
                 </Button>
              </div>
           </div>
@@ -279,17 +283,18 @@ export default function WhatsAppPage() {
       
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
+          width: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #E5E7EB;
-          border-radius: 10px;
+          background: #f1f1f1;
+          border: 2px solid white;
+          border-radius: 12px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #D1D5DB;
+          background: #e5e5e5;
         }
       `}</style>
     </div>

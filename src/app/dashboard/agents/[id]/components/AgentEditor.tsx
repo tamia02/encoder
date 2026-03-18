@@ -137,77 +137,74 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#FDFDFD] text-neutral-800 animate-in fade-in duration-500 overflow-hidden font-sans">
+    <div className="flex flex-col h-screen bg-white text-neutral-900 animate-in fade-in duration-1000 overflow-hidden font-sans">
       
       {/* Platform Header */}
-      <header className="h-14 border-b border-neutral-200 bg-white flex items-center justify-between px-4 z-40 sticky top-0 shadow-sm">
-        <div className="flex items-center gap-4">
+      <header className="h-20 border-b border-neutral-100 bg-white/80 backdrop-blur-xl flex items-center justify-between px-10 z-40 sticky top-0">
+        <div className="flex items-center gap-6">
            {/* Agent Selector */}
-           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 cursor-pointer transition-colors group">
+           <div className="flex items-center gap-4 px-5 py-2.5 rounded-[1.5rem] border border-neutral-100 bg-neutral-50/50 hover:bg-white hover:shadow-xl transition-all duration-500 cursor-pointer group shadow-inner">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(0,102,255,0.6)]" />
               <div className="flex flex-col">
-                <span className="text-[9px] text-neutral-500 font-bold uppercase tracking-tight">Selected Agent</span>
-                <span className="text-xs font-black text-neutral-900">{agent.name}</span>
+                <span className="text-[10px] text-neutral-400 font-black uppercase tracking-widest leading-none mb-1">Active Neural Node</span>
+                <span className="text-sm font-black text-neutral-900 uppercase tracking-tight">{agent.name}</span>
               </div>
-              <ChevronDown className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600 ml-2" />
+              <ChevronDown className="w-5 h-5 text-neutral-300 group-hover:text-primary transition-colors ml-4" />
            </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-6">
            {/* Search Bar */}
-           <div className="relative group w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 group-hover:text-neutral-600" />
+           <div className="relative group lg:w-80 hidden lg:block">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-300 group-focus-within:text-primary transition-colors" />
               <Input 
-                 placeholder="Search..." 
-                 className="h-9 pl-9 pr-4 rounded-xl border-neutral-200 bg-neutral-50 focus:bg-white focus:border-primary/50 text-xs transition-all outline-none ring-0 focus-visible:ring-0"
+                 placeholder="Search neural parameters..." 
+                 className="h-12 pl-12 pr-6 rounded-2xl border-none bg-neutral-50/50 focus:bg-white text-[11px] font-black uppercase tracking-widest transition-all outline-none ring-0 focus-visible:ring-4 focus-visible:ring-primary/5 shadow-inner"
               />
            </div>
 
-           <div className="w-px h-6 bg-neutral-200 mx-2" />
+           <div className="w-px h-8 bg-neutral-100 mx-2" />
 
            <Button 
-            className="h-9 px-4 rounded-lg bg-[#0066FF] hover:bg-[#0052CC] text-white font-black text-[11px] gap-2 shadow-sm"
+            className="h-12 px-8 rounded-2xl bg-black text-white hover:bg-neutral-900 font-black text-[10px] tracking-[0.2em] gap-3 shadow-2xl shadow-black/10 transition-all hover:scale-105 active:scale-95 uppercase"
             onClick={onSave}
             disabled={isPending}
            >
-              {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
-              PUBLISH
+              {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 text-primary" />}
+              Synchronize
            </Button>
 
-           <Button className="h-9 px-4 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 font-bold text-[11px] gap-2 shadow-sm" onClick={() => setActiveTab("simulator")}>
-              <Play className="w-3.5 h-3.5 text-primary fill-primary/10" />
-              TEST
+           <Button className="h-12 px-8 rounded-2xl border border-neutral-100 bg-white hover:bg-neutral-50 text-neutral-900 font-black text-[10px] tracking-[0.2em] gap-3 shadow-sm transition-all hover:scale-105 active:scale-95 uppercase" onClick={() => setActiveTab("simulator")}>
+              <Play className="w-4 h-4 text-primary fill-primary/10" />
+              Test Core
            </Button>
 
            <Button 
-            className="h-9 px-4 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 font-bold text-[11px] gap-2 shadow-sm"
+            className="h-12 px-8 rounded-2xl border border-neutral-100 bg-white hover:bg-neutral-50 text-neutral-900 font-black text-[10px] tracking-[0.2em] gap-3 shadow-sm transition-all hover:scale-105 active:scale-95 uppercase"
             onClick={() => setActiveTab("widget")}
            >
-              <Share2 className="w-3.5 h-3.5" />
-              SHARE
-           </Button>
-
-           <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-lg border border-neutral-200">
-              <ChevronDown className="w-4 h-4 text-neutral-400" />
+              <Share2 className="w-4 h-4" />
+              Broadcast
            </Button>
         </div>
       </header>
 
       {/* Navigation Tabs (Horizontal) */}
-      <nav className="h-12 border-b border-neutral-200 bg-white flex items-center px-4 gap-1 overflow-x-auto no-scrollbar scroll-smooth sticky top-14 z-30">
+      <nav className="h-16 border-b border-neutral-50 bg-white flex items-center px-10 gap-2 overflow-x-auto no-scrollbar scroll-smooth sticky top-20 z-30 shadow-sm">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2.5 px-4 h-full text-[11px] font-black uppercase tracking-widest transition-all relative whitespace-nowrap ${
+            className={`flex items-center gap-3 px-6 h-full text-[10px] font-black uppercase tracking-[0.2em] transition-all relative whitespace-nowrap group ${
               activeTab === tab.id
-                ? "text-[#0066FF]"
-                : "text-neutral-500 hover:text-neutral-900"
+                ? "text-primary"
+                : "text-neutral-400 hover:text-neutral-900"
             }`}
           >
-            <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? "text-[#0066FF]" : "text-neutral-400"}`} />
+            <tab.icon className={`w-4 h-4 transition-transform duration-500 group-hover:scale-110 ${activeTab === tab.id ? "text-primary scale-110" : "text-neutral-300"}`} />
             {tab.label}
             {activeTab === tab.id && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0066FF] rounded-t-full" />
+              <div className="absolute bottom-0 left-4 right-4 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(0,102,255,0.4)]" />
             )}
           </button>
         ))}
@@ -215,7 +212,7 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
 
       <div className="flex flex-1 overflow-hidden relative">
         {/* Main Workspace */}
-        <main className="flex-1 overflow-y-auto bg-[#F8F9FA] custom-scrollbar pb-24">
+        <main className="flex-1 overflow-y-auto bg-white custom-scrollbar pb-32">
            <div className="max-w-7xl mx-auto p-8">
              
              {activeTab === "prompt" && (
@@ -223,49 +220,52 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
                    
                    {/* Instructions Card */}
                    <div className="bg-white rounded-[2rem] border border-neutral-200 shadow-sm overflow-hidden">
-                      <div className="p-6 border-b border-neutral-100 flex items-center justify-between group">
-                         <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-2xl bg-neutral-100 flex items-center justify-center text-neutral-900">
-                               <Bot className="w-5 h-5" />
+                      <div className="p-8 border-b border-neutral-100 flex items-center justify-between group bg-neutral-50/30">
+                         <div className="flex items-center gap-4">
+                            <div className="w-11 h-11 rounded-[1.25rem] bg-white border border-neutral-100 flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform duration-500">
+                               <Bot className="w-6 h-6" />
                             </div>
-                            <h3 className="text-sm font-black text-neutral-900 uppercase tracking-tight">Instructions</h3>
+                            <div>
+                               <h3 className="text-sm font-black text-neutral-900 uppercase tracking-[0.1em]">Neural Directives</h3>
+                               <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest mt-0.5">Primary instruction set Cluster</p>
+                            </div>
                          </div>
-                         <ChevronDown className="w-4 h-4 text-neutral-400" />
+                         <ChevronDown className="w-5 h-5 text-neutral-300 group-hover:text-primary transition-colors" />
                       </div>
 
                       <div className="p-8 space-y-10">
                          {/* Initiator Section */}
-                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                            <div className="space-y-4">
-                               <h4 className="text-[12px] font-black text-neutral-900">Who should start the conversation?</h4>
-                               <div className="flex items-center justify-between p-6 rounded-3xl bg-white border border-neutral-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
-                                  <div className="space-y-1">
-                                     <p className="text-xs font-black text-neutral-900">User starts</p>
-                                     <p className="text-[10px] text-neutral-500 font-bold leading-relaxed">Turn off to let the AI start</p>
+                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                            <div className="space-y-6">
+                               <h4 className="text-[13px] font-black text-neutral-900 uppercase tracking-tight">Sequence Initialization</h4>
+                               <div className="flex items-center justify-between p-8 rounded-[2rem] bg-neutral-50/50 border border-neutral-100 shadow-inner group/initiator hover:bg-white transition-all duration-700">
+                                  <div className="space-y-2">
+                                     <p className="text-[11px] font-black text-neutral-900 uppercase tracking-widest">Client Initiated</p>
+                                     <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Passive Mode Cluster</p>
                                   </div>
                                   <Switch 
                                      checked={agent.whoStarts === 'USER'}
                                      onCheckedChange={(val: boolean) => handleUpdate({ whoStarts: val ? 'USER' : 'AI' })}
-                                     className="data-[state=checked]:bg-blue-500"
+                                     className="data-[state=checked]:bg-primary shadow-xl shadow-primary/20 scale-110"
                                   />
                                </div>
-                               <p className="text-[10px] text-neutral-400 font-bold leading-relaxed">
-                                  When a chat or call begins, choose who speaks first. If the AI starts, you can set a greeting below or leave it empty to auto-generate from the instructions.
+                               <p className="text-[10px] text-neutral-400 font-bold leading-relaxed uppercase tracking-widest opacity-80 pl-2 border-l-2 border-primary/20 italic">
+                                  Define the neural trigger for conversation onset. If set to passive, the agent awaits a client signal.
                                </p>
                             </div>
 
-                            <div className="space-y-4">
-                               <h4 className="text-[12px] font-black text-neutral-500">AI Greeting (optional)</h4>
-                               <div className="relative">
+                            <div className="space-y-6">
+                               <h4 className="text-[13px] font-black text-neutral-900 uppercase tracking-tight">System Salutation</h4>
+                               <div className="relative group">
                                   <Textarea 
                                      value={agent.greeting || ""}
                                      onChange={(e) => handleUpdate({ greeting: e.target.value })}
-                                     placeholder="Optional: leave empty to generate from the instructions."
-                                     className="h-[100px] rounded-3xl bg-neutral-50 border-neutral-200 text-xs font-bold p-6 ring-0 focus-visible:ring-0 focus:bg-white transition-all resize-none shadow-inner"
+                                     placeholder="ENTER NEURAL GREETING (OPTIONAL)"
+                                     className="h-[120px] rounded-[2rem] bg-neutral-50/50 border-none text-[11px] font-black uppercase tracking-[0.2em] p-8 ring-0 focus-visible:ring-4 focus-visible:ring-primary/5 focus:bg-white transition-all resize-none shadow-inner"
                                   />
                                </div>
-                               <p className="text-[10px] text-neutral-400 font-bold italic">
-                                  Used only when the AI starts. Leave empty to auto‑generate from the instructions.
+                               <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest opacity-80 pl-2 border-l-2 border-primary/20 italic">
+                                  Synchronized when AI-Initiated mode is broadcast. System-generated if left Null.
                                </p>
                             </div>
                          </div>
@@ -395,44 +395,51 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
 
                       {/* RAG Settings */}
                       <div className="lg:col-span-5 space-y-8">
-                         <div className="p-8 rounded-[2.5rem] bg-white border border-neutral-200 shadow-sm space-y-10">
-                            <div>
-                               <h3 className="text-sm font-black text-neutral-900 uppercase tracking-tight">Retrieval Logic</h3>
-                               <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Fine-tune the RAG engine performance</p>
+                         <div className="p-12 rounded-[3.5rem] bg-white border border-neutral-100 shadow-2xl shadow-primary/5 space-y-12">
+                            <div className="flex items-center gap-6">
+                               <div className="w-14 h-14 rounded-[1.5rem] bg-neutral-50 flex items-center justify-center text-primary shadow-inner">
+                                  <Cpu className="w-7 h-7" />
+                               </div>
+                               <div>
+                                  <h3 className="text-xl font-black text-neutral-900 uppercase tracking-tight">Neural Retrieval Logic</h3>
+                                  <p className="text-[10px] text-neutral-400 font-black uppercase tracking-widest mt-1">Advanced RAG Parameter Synthesis</p>
+                               </div>
                             </div>
 
-                            <div className="space-y-6">
-                               <div className="space-y-4">
-                                  <div className="flex items-center justify-between">
-                                     <span className="text-[10px] font-black text-neutral-500 uppercase tracking-widest">Similarity Top-K</span>
-                                     <span className="text-xs font-black text-primary">{agent.maxRetrieve} Docs</span>
+                            <div className="space-y-10">
+                               <div className="space-y-6">
+                                  <div className="flex items-center justify-between px-2">
+                                     <span className="text-[11px] font-black text-neutral-900 uppercase tracking-[0.2em]">Semantic Top-K</span>
+                                     <Badge className="bg-primary/10 text-primary border-none px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest">{agent.maxRetrieve} NODES</Badge>
                                   </div>
                                   <Slider 
                                      value={[agent.maxRetrieve]} 
                                      max={20} 
                                      step={1} 
                                      onValueChange={(val: number[]) => handleUpdate({ maxRetrieve: val[0] })}
+                                     className="py-4"
                                   />
                                </div>
 
-                               <div className="space-y-4">
-                                  <div className="flex items-center justify-between">
-                                     <span className="text-[10px] font-black text-neutral-500 uppercase tracking-widest">Temperature</span>
-                                     <span className="text-xs font-black text-primary">{agent.temperature}</span>
+                               <div className="space-y-6">
+                                  <div className="flex items-center justify-between px-2">
+                                     <span className="text-[11px] font-black text-neutral-900 uppercase tracking-[0.2em]">Neural Temperature</span>
+                                     <Badge className="bg-primary/10 text-primary border-none px-4 py-1.5 rounded-full font-black text-[10px] uppercase tracking-widest">{agent.temperature}</Badge>
                                   </div>
                                   <Slider 
                                      value={[agent.temperature * 100]} 
                                      max={100} 
                                      step={1} 
                                      onValueChange={(val: number[]) => handleUpdate({ temperature: val[0] / 100 })}
+                                     className="py-4"
                                   />
                                </div>
                             </div>
 
-                            <div className="flex items-center gap-3 p-5 rounded-2xl bg-neutral-50 border border-neutral-100">
-                               <AlertCircle className="w-4 h-4 text-orange-500" />
-                               <p className="text-[9px] text-neutral-500 font-bold leading-relaxed">
-                                  Higher Top-K improves retrieval accuracy but increases token consumption.
+                            <div className="flex items-start gap-6 p-8 rounded-[2rem] bg-neutral-50/50 border border-neutral-100 shadow-inner group">
+                               <AlertCircle className="w-6 h-6 text-orange-400 group-hover:scale-110 transition-transform" />
+                               <p className="text-[10px] text-neutral-500 font-bold leading-relaxed uppercase tracking-widest opacity-80 italic">
+                                  Higher Top-K clusters improve synthetic reasoning precision but accelerate token consumption vectors.
                                </p>
                             </div>
                          </div>

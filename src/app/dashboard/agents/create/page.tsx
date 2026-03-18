@@ -610,8 +610,22 @@ export default function AgentBuilderPage() {
                >
                   <ChevronLeft className="w-4 h-4" /> BACK
                </Button>
-               <div className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">
-                  Step {currentStep} of 6
+               <div className="flex items-center gap-8">
+                  <div className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">
+                     Step {currentStep} of 6
+                  </div>
+                  <Button 
+                    className="h-14 rounded-2xl px-12 bg-black hover:bg-neutral-900 text-white font-black uppercase text-xs tracking-widest gap-3 shadow-2xl shadow-black/10 transition-all hover:scale-105 active:scale-95"
+                    onClick={currentStep === 6 ? handleSave : nextStep}
+                    disabled={isPending || (currentStep === 1 && !formData.name)}
+                  >
+                     {isPending ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                     ) : (
+                        currentStep === 6 ? <CheckCircle2 className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />
+                     )}
+                     {isPending ? "FINALIZING..." : currentStep === 6 ? "SAVE AGENT" : "CONTINUE"}
+                  </Button>
                </div>
             </div>
 
