@@ -10,20 +10,47 @@ export async function updateBranding(data: {
   domain?: string;
 }) {
   try {
-    // Mocking the user ID for consistency
     const userId = "placeholder_user_id";
 
-    // Find the user and their first workspace
-    const user = await prisma.user.findUnique({
+    // 1. Get or create the user's default workspace
+    let user = await prisma.user.findUnique({
       where: { clerkId: userId },
       include: { workspaces: true },
     });
 
-    if (!user || user.workspaces.length === 0) {
-      return { success: false, error: "No workspace found" };
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          clerkId: userId,
+          email: "placeholder@email.com",
+          name: "New User",
+          workspaces: {
+            create: {
+              name: "My Workspace",
+              slug: `workspace-${userId.slice(-6)}`,
+            },
+          },
+        },
+        include: { workspaces: true },
+      });
     }
 
-    const workspaceId = user.workspaces[0].id;
+    if (user.workspaces.length === 0) {
+        await prisma.workspace.create({
+            data: {
+                name: "My Workspace",
+                slug: `workspace-${userId.slice(-6)}`,
+                userId: user.id
+            }
+        });
+        // Re-fetch user with workspace
+        user = await prisma.user.findUnique({
+            where: { clerkId: userId },
+            include: { workspaces: true },
+        }) as any;
+    }
+
+    const workspaceId = user!.workspaces[0].id;
 
     await prisma.workspace.update({
       where: { id: workspaceId },
