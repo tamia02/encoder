@@ -75,9 +75,11 @@ export default async function AgentsPage() {
               </div>
 
               <div className="relative z-10 flex items-center gap-4 border-t border-neutral-50 pt-8">
-                <Button className="flex-1 h-14 rounded-2xl bg-neutral-900 text-white hover:bg-black font-black text-[10px] tracking-widest uppercase gap-3 shadow-xl transition-all hover:scale-[1.02] active:scale-95">
-                  <Play className="w-4 h-4 fill-white" /> Live Test
-                </Button>
+                <Link href={`/dashboard/agents/${agent.id}?tab=simulator`} className="flex-1">
+                  <Button className="w-full h-14 rounded-2xl bg-neutral-900 text-white hover:bg-black font-black text-[10px] tracking-widest uppercase gap-3 shadow-xl transition-all hover:scale-[1.02] active:scale-95">
+                    <Play className="w-4 h-4 fill-white" /> Live Test
+                  </Button>
+                </Link>
                 <Link href={`/dashboard/agents/${agent.id}`}>
                   <Button variant="outline" size="sm" className="h-14 w-14 p-0 rounded-2xl border-neutral-200 bg-white text-neutral-400 hover:text-primary hover:border-primary/40 hover:shadow-xl transition-all">
                     <Edit className="w-5 h-5" />

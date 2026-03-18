@@ -73,7 +73,16 @@ export async function updateAgent(agentId: string, data: any) {
     const { revalidatePath } = await import("next/cache");
     
     // Explicitly omit fields that shouldn't be updated or cause Prisma errors
-    const { id, knowledgeBase, createdAt, updatedAt, workspace, ...updateData } = data;
+    const { 
+      id, 
+      knowledgeBase, 
+      createdAt, 
+      updatedAt, 
+      workspace, 
+      calls,
+      workspaceId, // Usually don't want to change workspace via this action
+      ...updateData 
+    } = data;
 
     await prisma.agent.update({
       where: { id: agentId },

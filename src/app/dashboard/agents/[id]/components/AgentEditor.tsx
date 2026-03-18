@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition, ChangeEvent, useRef } from "react";
+import { useState, useTransition, ChangeEvent, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { 
   Bot, 
   Settings, 
@@ -80,13 +81,14 @@ interface AgentEditorProps {
     [key: string]: any;
   };
 }
-
 export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab") || "prompt";
+  
   const [agent, setAgent] = useState(initialAgent);
-  const [activeTab, setActiveTab] = useState("prompt");
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [activeScriptTab, setActiveScriptTab] = useState<"text" | "voice">("text");
   const [isPending, startTransition] = useTransition();
-  const [showTest, setShowTest] = useState(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string, analytics?: any }[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -99,39 +101,52 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
     setInputValue("");
     setIsTyping(true);
 
-    // AI Response Logic with Memory Awareness
+    // Dynamic mock response based on agent's personality
     setTimeout(() => {
-      let responseContent = `I've received your instruction: "${inputValue.substring(0, 30)}...". I am operating as ${agent.name}.`;
+      let response = "";
+      const lowerInput = inputValue.toLowerCase();
       
-      // Simulate Persistent Memory Layer
-      if (inputValue.toLowerCase().includes("remember") || inputValue.toLowerCase().includes("previous")) {
-         responseContent = `Checking context memory... Found 2 previous interactions. You previously mentioned interest in ${agent.role} services. How can I build upon that today?`;
-      } else if (inputValue.toLowerCase().includes("who am i")) {
-         responseContent = `Retrieving your profile... You are a high-value lead from our latest campaign. Your last status was "QUALIFIED".`;
+      if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
+        response = agent.greeting || "Hello! I'm your AI assistant. How can I help you today?";
+      } else if (lowerInput.includes("who are you") || lowerInput.includes("identity")) {
+        response = `I am ${agent.name}, an autonomous agent powered by the ${agent.model} engine. My purpose is: ${agent.systemPrompt?.slice(0, 100)}...`;
+      } else if (lowerInput.includes("help")) {
+        response = "I can assist you with various tasks based on my configuration. What specifically do you need help with?";
+      } else {
+        response = `[SIMULATED ${agent.model} RESPONSE] Based on my system prompt ("${agent.systemPrompt?.slice(0, 50)}..."), I would process your request: "${inputValue}". I am currently in ${agent.mode} mode with a temperature of ${agent.temperature}.`;
       }
 
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: responseContent,
+        content: response,
         analytics: {
-           sentiment: 'Positive',
-           intent: 'Inquiry',
-           score: 95
+          latency: "450ms",
+          tokens: Math.floor(Math.random() * 50) + 10,
+          confidence: 0.98,
+          noise_floor: "-54dB"
         }
       }]);
       setIsTyping(false);
-    }, 1500);
+    }, 1000);
   };
+
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
 
   const handleUpdate = (updates: Partial<typeof initialAgent>) => {
     setAgent((prev: any) => ({ ...prev, ...updates }));
+    if (saveStatus === "success") setSaveStatus("idle");
   };
 
   const onSave = () => {
+    setSaveStatus("saving");
     startTransition(async () => {
       const res = await updateAgent(agent.id, agent);
       if (res.success) {
-        // Success feedback
+        setSaveStatus("success");
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      } else {
+        setSaveStatus("error");
+        setTimeout(() => setSaveStatus("idle"), 3000);
       }
     });
   };
@@ -165,14 +180,24 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
 
            <div className="w-px h-8 bg-neutral-100 mx-2" />
 
-           <Button 
-            className="h-12 px-8 rounded-2xl bg-black text-white hover:bg-neutral-900 font-black text-[10px] tracking-[0.2em] gap-3 shadow-2xl shadow-black/10 transition-all hover:scale-105 active:scale-95 uppercase"
-            onClick={onSave}
-            disabled={isPending}
-           >
-              {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 text-primary" />}
-              Synchronize
-           </Button>
+            <Button 
+             className={`h-12 px-8 rounded-2xl font-black text-[10px] tracking-[0.2em] gap-3 shadow-2xl transition-all hover:scale-105 active:scale-95 uppercase ${
+               saveStatus === "success" ? "bg-green-500 hover:bg-green-600 text-white shadow-green-200" :
+               saveStatus === "error" ? "bg-red-500 hover:bg-red-600 text-white shadow-red-200" :
+               "bg-black text-white hover:bg-neutral-900 shadow-black/10"
+             }`}
+             onClick={onSave}
+             disabled={saveStatus === "saving"}
+            >
+               {saveStatus === "saving" ? <Loader2 className="w-4 h-4 animate-spin" /> : 
+                saveStatus === "success" ? <CheckCircle className="w-4 h-4" /> : 
+                saveStatus === "error" ? <AlertCircle className="w-4 h-4" /> : 
+                <Save className="w-4 h-4 text-primary" />}
+               {saveStatus === "saving" ? "Synchronizing..." : 
+                saveStatus === "success" ? "Synchronized" : 
+                saveStatus === "error" ? "Sync Failed" : 
+                "Synchronize"}
+            </Button>
 
            <Button className="h-12 px-8 rounded-2xl border border-neutral-100 bg-white hover:bg-neutral-50 text-neutral-900 font-black text-[10px] tracking-[0.2em] gap-3 shadow-sm transition-all hover:scale-105 active:scale-95 uppercase" onClick={() => setActiveTab("simulator")}>
               <Play className="w-4 h-4 text-primary fill-primary/10" />
