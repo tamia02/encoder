@@ -29,8 +29,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 const INTEGRATIONS = [
-  { id: "hubspot", name: "HubSpot", category: "CRM", icon: <Users className="text-orange-500" />, status: "Connected", desc: "Sync leads and conversation outcomes to HubSpot CRM." },
-  { id: "make", name: "Make.com", category: "Automation", icon: <Zap className="text-blue-500" />, status: "Active", desc: "Build complex workflows and connect 1000+ apps via Make." },
+  { id: "hubspot", name: "HubSpot", category: "CRM", icon: <Users className="text-orange-500" />, status: "Not Connected", desc: "Sync leads and conversation outcomes to HubSpot CRM." },
+  { id: "make", name: "Make.com", category: "Automation", icon: <Zap className="text-blue-500" />, status: "Not Connected", desc: "Build complex workflows and connect 1000+ apps via Make." },
   { id: "stripe", name: "Stripe", category: "Payments", icon: <CreditCard className="text-[#635BFF]" />, status: "Not Connected", desc: "Accept payments and manage subscriptions inside WhatsApp." },
   { id: "cal", name: "Cal.com", category: "Scheduling", icon: <Calendar className="text-neutral-900" />, status: "Not Connected", desc: "Allow AI agents to book meetings directly on your calendar." },
   { id: "slack", name: "Slack", category: "Communication", icon: <MessageSquare className="text-[#4A154B]" />, status: "Not Connected", desc: "Send real-time alerts for qualified leads to your Slack channels." },

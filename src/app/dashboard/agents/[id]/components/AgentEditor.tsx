@@ -773,13 +773,13 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
                       </div>
                       <Badge className="bg-primary hover:bg-primary/90 text-white border-0 py-1 px-4 rounded-lg font-black tracking-widest text-[9px]">LIVE OPS</Badge>
                    </div>
-
+ 
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                       {[
-                        { label: "Avg Sentiment", value: "Positive", sub: "Based on 42 calls", icon: <Bot className="text-green-500" />, trend: "+12%" },
-                        { label: "Success Score", value: "88/100", sub: "Lead qualification", icon: <Trophy className="text-yellow-500" />, trend: "+5%" },
-                        { label: "Intent Match", value: "94%", sub: "Classification accuracy", icon: <Target className="text-blue-500" /> },
-                        { label: "Memory Hits", value: "126", sub: "Profile retrievals", icon: <Database className="text-purple-500" /> },
+                        { label: "Avg Sentiment", value: "Neutral", sub: "No calls yet", icon: <Bot className="text-neutral-400" />, trend: null },
+                        { label: "Success Score", value: "--", sub: "Awaiting data", icon: <Trophy className="text-neutral-400" />, trend: null },
+                        { label: "Intent Match", value: "0%", sub: "Initializing...", icon: <Target className="text-neutral-400" />, trend: null },
+                        { label: "Memory Hits", value: "0", sub: "Profile retrievals", icon: <Database className="text-neutral-400" />, trend: null },
                       ].map((stat, i) => (
                         <div key={i} className="p-8 rounded-[2.5rem] bg-white border border-neutral-200 shadow-sm space-y-4 group hover:border-primary/30 transition-all">
                            <div className="flex items-center justify-between">
@@ -796,7 +796,7 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
                         </div>
                       ))}
                    </div>
-
+ 
                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-10">
                       <div className="lg:col-span-8 p-10 rounded-[3rem] bg-white border border-neutral-200 shadow-sm space-y-8">
                          <div className="flex items-center justify-between">
@@ -808,13 +808,13 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
                          </div>
                          <div className="space-y-6 pt-4">
                             {[
-                               { label: "Initial Greeting", percent: 100, color: "bg-blue-500" },
-                               { label: "Context Retrieval", percent: 92, color: "bg-indigo-500" },
-                               { label: "Intent Identified", percent: 84, color: "bg-purple-500" },
-                               { label: "Lead Qualified", percent: 65, color: "bg-green-500" },
-                               { label: "Outcome Finalized", percent: 58, color: "bg-emerald-500" },
+                               { label: "Initial Greeting", percent: 0, color: "bg-blue-500" },
+                               { label: "Context Retrieval", percent: 0, color: "bg-indigo-500" },
+                               { label: "Intent Identified", percent: 0, color: "bg-purple-500" },
+                               { label: "Lead Qualified", percent: 0, color: "bg-green-500" },
+                               { label: "Outcome Finalized", percent: 0, color: "bg-emerald-500" },
                             ].map((row, i) => (
-                               <div key={i} className="space-y-2">
+                               <div key={row.label} className="space-y-2">
                                   <div className="flex justify-between text-[10px] font-black uppercase tracking-tight ml-1">
                                      <span className="text-neutral-500">{row.label}</span>
                                      <span className="text-neutral-900">{row.percent}%</span>
@@ -826,29 +826,21 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
                             ))}
                          </div>
                       </div>
-                      <div className="lg:col-span-4 p-10 rounded-[3rem] bg-neutral-50 border border-neutral-200 space-y-8 shadow-inner overflow-hidden relative group">
+                      <div className="lg:col-span-4 p-10 rounded-[3rem] bg-neutral-50 border border-neutral-200 space-y-8 shadow-inner overflow-hidden relative group flex flex-col">
                           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] -mr-10 -mt-10" />
                           <div className="flex items-center gap-3">
                              <Zap className="w-5 h-5 text-yellow-500" />
                              <h4 className="text-xs font-black text-neutral-900 uppercase tracking-widest">Top User Intents</h4>
                           </div>
-                          <div className="space-y-4">
-                             {[
-                                { tag: "Pricing Inquiry", val: "42%" },
-                                { tag: "Technical Support", val: "28%" },
-                                { tag: "Scheduling", val: "18%" },
-                                { tag: "Other", val: "12%" },
-                             ].map((intent, i) => (
-                                <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-white border border-neutral-100 hover:border-primary/20 hover:bg-neutral-50/50 transition-all cursor-pointer shadow-sm">
-                                   <span className="text-[10px] font-black text-neutral-900 uppercase tracking-widest">{intent.tag}</span>
-                                   <span className="text-xs font-bold text-neutral-400">{intent.val}</span>
-                                </div>
-                             ))}
+                          
+                          <div className="space-y-4 flex-1 flex flex-col items-center justify-center p-10 border border-dashed border-neutral-200 rounded-[2rem] bg-white/50">
+                             <p className="text-[10px] text-neutral-400 font-black uppercase tracking-widest text-center">No intents detected yet.<br/>Start a conversation to begin classification.</p>
                           </div>
-                          <Button className="w-full h-12 rounded-xl bg-neutral-900 text-white hover:bg-black font-black text-[10px] tracking-widest uppercase shadow-xl shadow-neutral-900/10">
+ 
+                          <Button className="w-full h-12 rounded-xl bg-neutral-900 text-white hover:bg-black font-black text-[10px] tracking-widest uppercase shadow-xl shadow-neutral-900/10 mt-8">
                              EXPORT ANALYSIS
                           </Button>
-                       </div>
+                      </div>
                    </div>
                 </div>
              )}
