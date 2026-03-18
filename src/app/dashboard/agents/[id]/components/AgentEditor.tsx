@@ -89,6 +89,7 @@ export default function AgentEditor({ agent: initialAgent }: AgentEditorProps) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [activeScriptTab, setActiveScriptTab] = useState<"text" | "voice">("text");
   const [isPending, startTransition] = useTransition();
+  const [showTest, setShowTest] = useState(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string, analytics?: any }[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
